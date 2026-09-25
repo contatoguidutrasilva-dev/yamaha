@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Motos Yamaha | Consórcio, financiamento e atendimento no WhatsApp</title>
+  <meta name="description" content="Escolha sua Yamaha: NMAX, Fazer, Crosser, Lander, MT, R3 e mais. Simule consórcio e financiamento e fale direto no WhatsApp.">
+  <meta name="theme-color" content="#0a0f2e">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:title" content="Motos Yamaha | Sua próxima Yamaha">
+  <meta property="og:description" content="Consórcio, financiamento e atendimento direto no WhatsApp. Sua próxima Yamaha está aqui.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animacoes.css">
+  <script>if (!(window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches)) document.documentElement.classList.add("anim");</script>
+
+  <script type="application/ld+json" id="ld">
+  {
+    "@context": "https://schema.org",
+    "@type": "MotorcycleDealer",
+    "name": "Motos Yamaha",
+    "description": "Motos Yamaha, consórcio e financiamento.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "BR"
+    }
+  }
+  </script>
+</head>
+<body>
+  <a class="skip" href="#vitrine">Ir para as motos</a>
+
+  <!-- ============ BARRA SUPERIOR ============ -->
+  <header class="topbar">
+    <div class="wrap topbar__in">
+      <a class="topbar__who" href="#topo">
+        <span class="avatar avatar--sm" id="tb-avatar" aria-hidden="true"></span>
+        <b id="tb-nome">Motos Yamaha</b>
+      </a>
+      <nav class="topbar__nav" aria-label="Seções da página">
+        <a href="#vitrine">Motos</a>
+        <a href="#caminhos">Como comprar</a>
+        <a href="#onde" data-onde hidden>Onde estamos</a>
+      </nav>
+      <a class="btn btn--wa btn--sm" data-wa="Olá! Vim pelo seu site e quero saber mais." target="_blank" rel="noopener">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>
+        WhatsApp
+      </a>
+    </div>
+  </header>
+
+  <!-- ============ ABERTURA ============ -->
+  <section class="hero" id="topo">
+    <div class="hero__bars" aria-hidden="true"></div>
+    <div class="wrap hero__grid">
+      <div class="hero__copy">
+        <p class="eyebrow" id="eyebrow">Motos Yamaha</p>
+        <h1 class="hero__title" id="titulo">Motos Yamaha</h1>
+        <p class="hero__lead" id="bio">Escolha sua Yamaha, simule consórcio ou financiamento e resolva tudo pelo WhatsApp.</p>
+        <div class="hero__cta">
+          <a class="btn btn--wa btn--lg" data-wa="Olá! Vim pelo seu site e quero saber mais." target="_blank" rel="noopener">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>
+            <span id="cta-label">Chamar no WhatsApp</span>
+          </a>
+          <a class="btn btn--ghost btn--lg" href="#vitrine">Ver as motos</a>
+          <a class="btn-round" data-instagram hidden target="_blank" rel="noopener" aria-label="Instagram">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-ig"/></svg>
+          </a>
+          <a class="btn-round" data-tel hidden aria-label="Ligar">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>
+          </a>
+        </div>
+        <ul class="hero__facts" id="facts"></ul>
+      </div>
+
+      <div class="hero__stage" id="stage">
+        <span class="hero__disc" aria-hidden="true"></span>
+        <button class="hero__moto" id="hero-moto" type="button" data-open="ficha" aria-label="Ver ficha da moto em destaque"></button>
+        <p class="hero__tag" id="hero-tag"></p>
+        <figure class="who" id="who" hidden>
+          <span class="avatar" id="who-avatar" aria-hidden="true"></span>
+          <figcaption><small>Atendimento com</small><b id="who-nome"></b></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <!-- ============ VITRINE ============ -->
+    <section class="sec sec--paper" id="vitrine" aria-labelledby="t-vitrine">
+      <div class="wrap">
+        <header class="sec__head">
+          <p class="sec__no">01 — Vitrine</p>
+          <h2 id="t-vitrine">A linha Yamaha</h2>
+          <p class="sec__sub" id="vitrine-sub">Da cidade à pista. Abra a ficha, simule consórcio ou financiamento e chame no WhatsApp.</p>
+        </header>
+
+        <div class="filters">
+          <div class="tabs" id="tabs" role="group" aria-label="Filtrar por categoria"></div>
+          <div class="segs" id="segs" role="group" aria-label="Filtrar por cilindrada"></div>
+        </div>
+        <p class="count" id="count" aria-live="polite"></p>
+
+        <div class="grid" id="grid">
+          <noscript><p>Ative o JavaScript para ver as motos ou <a href="https://wa.me/">fale no WhatsApp</a>.</p></noscript>
+        </div>
+        <div class="empty" id="empty" hidden>
+          <p>Nenhuma moto com esses filtros.</p>
+          <button class="btn btn--line btn--sm" type="button" data-reset>Limpar filtros</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CAMINHOS ============ -->
+    <section class="sec sec--ink" id="caminhos" aria-labelledby="t-caminhos">
+      <div class="wrap">
+        <header class="sec__head">
+          <p class="sec__no">02 — Como comprar</p>
+          <h2 id="t-caminhos">Três jeitos de levar a sua</h2>
+          <p class="sec__sub">Cada um combina com um momento. Escolha o seu e a gente ajusta os números na conversa.</p>
+        </header>
+        <div class="paths" id="paths"></div>
+      </div>
+    </section>
+
+    <!-- ============ ONDE ESTAMOS ============ -->
+    <section class="sec" id="onde" aria-labelledby="t-onde" hidden>
+      <div class="wrap">
+        <header class="sec__head">
+          <p class="sec__no">03 — Visite</p>
+          <h2 id="t-onde">Onde estamos</h2>
+        </header>
+        <div class="where">
+          <div class="where__card">
+            <p class="where__city" id="where-city"></p>
+            <ul class="where__rows">
+              <li id="row-addr" hidden><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pin"/></svg><span id="addr"></span></li>
+              <li id="row-tel" hidden><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg><a data-tel><span data-tel-text></span></a></li>
+              <li id="row-hours" hidden><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-clock"/></svg><span id="hours"></span></li>
+            </ul>
+            <p class="where__note" id="where-note"></p>
+            <div class="where__btns">
+              <a class="btn btn--blue" data-route hidden target="_blank" rel="noopener">
+                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-pin"/></svg>
+                Traçar rota
+              </a>
+              <a class="btn btn--wa" data-wa="Olá! Vim pelo seu site e quero saber como chegar." target="_blank" rel="noopener">
+                <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>
+                Falar no WhatsApp
+              </a>
+            </div>
+          </div>
+          <div class="where__map">
+            <iframe id="map" title="Mapa da localização" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ RODAPÉ ============ -->
+  <footer class="footer">
+    <div class="wrap">
+      <p class="footer__name"><b id="rodape-nome">Motos Yamaha</b><span id="rodape-loc"></span></p>
+      <nav class="footer__links" aria-label="Links do rodapé">
+        <a href="#vitrine">Motos</a>
+        <a href="#caminhos">Como comprar</a>
+        <a href="privacidade.html">Política de Privacidade</a>
+        <a data-instagram hidden target="_blank" rel="noopener">Instagram</a>
+      </nav>
+      <p class="footer__legal" id="legal">
+        Imagens ilustrativas. Especificações, condições de consórcio e de financiamento podem mudar e dependem de análise — confirme os detalhes no atendimento.
+        Fotos e fichas técnicas: Yamaha Motor do Brasil (yamaha-motor.com.br). Yamaha é marca registrada da Yamaha Motor Co., Ltd.
+        Este é um site de atendimento e não substitui o site oficial da Yamaha.
+        Seus dados são tratados conforme a LGPD e usados apenas para retornar o seu contato.
+      </p>
+    </div>
+  </footer>
+
+  <!-- ============ BARRA DE WHATSAPP (celular) ============ -->
+  <div class="stickybar" id="stickybar">
+    <a class="btn btn--wa" data-wa="Olá! Vim pelo seu site e quero saber mais." target="_blank" rel="noopener">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-wa"/></svg>
+      <span id="sticky-label">Chamar no WhatsApp</span>
+    </a>
+    <a class="btn btn--line" data-tel hidden aria-label="Ligar">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-phone"/></svg>
+    </a>
+  </div>
+
+  <!-- ============ GAVETAS ============ -->
+  <dialog class="drawer" id="dlg-ficha" aria-labelledby="dd-title">
+    <header class="drawer__head">
+      <div><p class="drawer__kicker" id="dd-kicker"></p><h2 id="dd-title"></h2></div>
+      <div class="drawer__nav">
+        <button type="button" class="icon-btn" data-nav="-1" aria-label="Moto anterior"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-prev"/></svg></button>
+        <button type="button" class="icon-btn" data-nav="1" aria-label="Próxima moto"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-next"/></svg></button>
+        <button type="button" class="icon-btn" data-close aria-label="Fechar"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"/></svg></button>
+      </div>
+    </header>
+    <div class="drawer__body" id="dd-body"></div>
+    <footer class="drawer__bar" id="dd-bar"></footer>
+  </dialog>
+
+  <dialog class="drawer" id="dlg-consorcio" aria-labelledby="dc-title">
+    <header class="drawer__head">
+      <div><p class="drawer__kicker">Simulador de consórcio</p><h2 id="dc-title"></h2></div>
+      <div class="drawer__nav">
+        <button type="button" class="icon-btn" data-nav="-1" aria-label="Moto anterior"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-prev"/></svg></button>
+        <button type="button" class="icon-btn" data-nav="1" aria-label="Próxima moto"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-next"/></svg></button>
+        <button type="button" class="icon-btn" data-close aria-label="Fechar"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"/></svg></button>
+      </div>
+    </header>
+    <div class="drawer__body" id="dc-body"></div>
+    <footer class="drawer__bar drawer__bar--stack" id="dc-bar"></footer>
+  </dialog>
+
+  <dialog class="drawer" id="dlg-financiamento" aria-labelledby="df-title">
+    <header class="drawer__head">
+      <div><p class="drawer__kicker">Financiamento</p><h2 id="df-title"></h2></div>
+      <div class="drawer__nav">
+        <button type="button" class="icon-btn" data-nav="-1" aria-label="Moto anterior"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-prev"/></svg></button>
+        <button type="button" class="icon-btn" data-nav="1" aria-label="Próxima moto"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-next"/></svg></button>
+        <button type="button" class="icon-btn" data-close aria-label="Fechar"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"/></svg></button>
+      </div>
+    </header>
+    <div class="drawer__body" id="df-body"></div>
+  </dialog>
+
+  <dialog class="drawer drawer--sm" id="dlg-contato" aria-labelledby="dt-title">
+    <header class="drawer__head">
+      <div><p class="drawer__kicker">WhatsApp</p><h2 id="dt-title">Fale com a gente</h2></div>
+      <div class="drawer__nav">
+        <button type="button" class="icon-btn" data-close aria-label="Fechar"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-close"/></svg></button>
+      </div>
+    </header>
+    <div class="drawer__body" id="dt-body"></div>
+  </dialog>
+
+  <!-- ============ COOKIES / LGPD ============ -->
+  <div class="cookiebar" id="cookie" role="dialog" aria-live="polite" aria-label="Aviso de cookies" hidden>
+    <p>Usamos cookies para o site funcionar melhor e para medir as visitas. Detalhes na <a href="privacidade.html">Política de Privacidade</a>.</p>
+    <button class="btn btn--amber btn--sm" type="button" id="cookie-ok">Aceitar e continuar</button>
+  </div>
+
+  <!-- Ícones (sprite) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-wa" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91A9.85 9.85 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.23 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.12-.16.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.41-.42-.56-.42h-.48c-.17 0-.43.06-.66.31-.22.25-.86.85-.86 2.07s.88 2.4 1 2.56c.12.17 1.73 2.64 4.19 3.7.59.25 1.05.4 1.4.52.59.19 1.13.16 1.55.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.22-.16-.47-.28Z"/></symbol>
+    <symbol id="i-ig" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" d="M7 3h10a4 4 0 0 1 4 4v10a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V7a4 4 0 0 1 4-4Zm5 5.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2Z"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></g></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></g></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 5v14l11-7Z"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" d="M6 6l12 12M18 6 6 18"/></symbol>
+    <symbol id="i-prev" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m15 5-7 7 7 7"/></symbol>
+    <symbol id="i-next" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" d="m9 5 7 7-7 7"/></symbol>
+  </svg>
+
+  <script src="js/config.js"></script>
+  <script src="js/motos.js"></script>
+  <script src="js/consorcio.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/animacoes.js"></script>
+</body>
+</html>

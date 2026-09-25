@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Política de Privacidade</title>
+  <meta name="description" content="Como tratamos os dados pessoais recebidos pelo site, conforme a LGPD.">
+  <meta name="theme-color" content="#0a0f2e">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .doc { max-width: 760px; margin: 0 auto; padding: 40px 24px 96px; }
+    .doc h1 { font-size: clamp(40px, 7vw, 60px); color: var(--ink); }
+    .doc h2 { font-size: 28px; color: var(--ink); margin: 34px 0 8px; }
+    .doc p, .doc li { font-size: 16px; }
+    .doc p + p, .doc ul { margin-top: 10px; }
+    .doc ul { padding-left: 20px; display: grid; gap: 6px; list-style: disc; }
+    .doc a { color: var(--blue); }
+    .doc__back { display: inline-flex; margin-bottom: 24px; font-weight: 800; color: var(--blue); text-underline-offset: 3px; }
+    .doc__upd { margin-top: 8px; color: var(--muted); font-size: 14px; }
+    .doc__aviso { margin-top: 24px; padding: 14px 16px; border: 2px dashed #f0b45a; background: #fff8ee; border-radius: 12px; font-size: 14px; color: #7a4a06; }
+  </style>
+</head>
+<body>
+  <main class="doc">
+    <a class="doc__back" href="./">← Voltar para o site</a>
+    <h1>Política de Privacidade</h1>
+    <p class="doc__upd">Última atualização: 25/09/2026</p>
+
+    <p class="doc__aviso" data-aviso hidden>Rascunho: revisar este texto com o cliente (e, de preferência, com um advogado) antes de publicar. Preencha razão social, CNPJ e e-mail em <b>js/config.js</b>.</p>
+
+    <h2>Quem é o responsável pelos dados</h2>
+    <p><b data-campo="razaoSocial">responsável a informar</b>, CNPJ <span data-campo="cnpj">a informar</span>, com atendimento em <span data-campo="cidadeUf">local a informar</span>, é a controladora dos dados pessoais coletados neste site, nos termos da Lei Geral de Proteção de Dados (Lei 13.709/2018 — LGPD).</p>
+
+    <h2>Quais dados coletamos</h2>
+    <ul>
+      <li><b>Dados que você informa:</b> nome, telefone/WhatsApp, valor de entrada, se possui habilitação e, quando você optar por preencher, data de nascimento e CPF — ao usar os formulários de contato e financiamento.</li>
+      <li><b>Dados de navegação:</b> páginas visitadas, cliques nos botões, tipo de aparelho e navegador, coletados por cookies e ferramentas de métricas, somente depois do seu aceite no aviso de cookies.</li>
+    </ul>
+
+    <h2>Para que usamos</h2>
+    <ul>
+      <li>Retornar o seu contato e responder sobre motos, consórcio e financiamento.</li>
+      <li>Consultar condições de crédito e de consórcio junto a parceiros financeiros e administradoras, quando você pedir.</li>
+      <li>Entender como o site é usado e melhorar o atendimento.</li>
+    </ul>
+    <p>A base legal é o seu consentimento e a execução de procedimentos preliminares a um contrato, a seu pedido.</p>
+
+    <h2>Com quem compartilhamos</h2>
+    <p>Os dados que você envia pelo formulário são abertos no WhatsApp para a nossa equipe. Podem ser compartilhados com instituições financeiras e administradoras de consórcio apenas para simular ou contratar o que você solicitou, e com fornecedores de tecnologia que hospedam o site e as métricas. Não vendemos seus dados.</p>
+
+    <h2>Cookies e métricas</h2>
+    <p>Usamos cookies para lembrar o seu aceite e, se ativadas, ferramentas como Google Tag Manager e Meta Pixel. Elas só carregam depois que você clica em “Continuar” no aviso. Você pode apagar ou bloquear cookies nas configurações do navegador.</p>
+
+    <h2>Por quanto tempo guardamos</h2>
+    <p>Pelo tempo necessário para o atendimento e para cumprir obrigações legais. Depois disso, os dados são apagados ou anonimizados.</p>
+
+    <h2>Seus direitos</h2>
+    <p>Você pode pedir a confirmação de que tratamos seus dados, acesso, correção, anonimização, portabilidade, eliminação e a revogação do consentimento, a qualquer momento.</p>
+
+    <h2>Fale com a gente</h2>
+    <p>Para exercer seus direitos ou tirar dúvidas sobre esta política: <span data-campo="emailPrivacidade">e-mail a informar</span> ou pelo WhatsApp da loja.</p>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script>
+    (function () {
+      var S = window.SITE || {};
+      var pendente = false;
+      var nome = S.vendedor || S.loja;
+      if (nome) document.title = "Política de Privacidade | " + nome;
+      S.cidadeUf = [S.cidade, S.uf].filter(Boolean).join(", ");
+      document.querySelectorAll("[data-campo]").forEach(function (el) {
+        var v = S[el.getAttribute("data-campo")];
+        if (v) el.textContent = v; else pendente = true;
+      });
+      if (pendente) document.querySelector("[data-aviso]").hidden = false;
+    })();
+  </script>
+</body>
+</html>
