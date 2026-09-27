@@ -152,6 +152,56 @@ h1, h2, h3, .display { font-family: var(--display); text-transform: uppercase; l
   .hero__tag b { font-size: 18px; }
 }
 
+/* Logo da Yamaha */
+.hero__brand { display: block; width: auto; height: 30px; margin-bottom: 20px; }
+.footer__brand { display: block; width: auto; height: 26px; margin-bottom: 18px; }
+@media (max-width: 480px) { .hero__brand { height: 26px; margin-bottom: 16px; } }
+
+/* Vídeo de fundo da abertura (criado pelo JS quando há SITE.videoFundo). A capa é o fundo do próprio bloco. */
+.hero__video { position: absolute; inset: 0; overflow: hidden; pointer-events: none; background: var(--ink) center / cover no-repeat; }
+.hero__video video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease; }
+.hero__video video.is-on { opacity: 1; }
+.hero__video::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, rgba(10, 15, 46, .84) 0%, rgba(10, 15, 46, .58) 46%, rgba(10, 15, 46, .16) 100%),
+    linear-gradient(180deg, rgba(10, 15, 46, .4) 0%, rgba(10, 15, 46, 0) 24%, rgba(10, 15, 46, 0) 72%, rgba(10, 15, 46, .62) 100%);
+}
+.hero.has-video .hero__copy { text-shadow: 0 2px 22px rgba(10, 15, 46, .65); }
+.hero.has-video .hero__bars { opacity: .8; }
+@media (max-width: 900px) {
+  .hero__video::after { background: linear-gradient(180deg, rgba(10, 15, 46, .78) 0%, rgba(10, 15, 46, .5) 48%, rgba(10, 15, 46, .8) 100%); }
+}
+
+/* Troca de moto na abertura */
+.hero__stage { margin-bottom: 38px; }
+.hero__moto .pic { grid-area: 1 / 1; }
+@keyframes hero-fade-in { from { opacity: 0; } }
+@keyframes hero-fade-out { to { opacity: 0; } }
+@keyframes tag-swap { from { opacity: 0; transform: translateY(8px); } }
+/* A foto usa mix-blend-mode: só se anima a própria <img> (opacity/transform no .pic geraria um quadrado branco). */
+.hero__moto .pic.is-in img { animation: hero-fade-in .6s ease-out; }
+.hero__moto .pic.is-out { pointer-events: none; }
+.hero__moto .pic.is-out img { animation: hero-fade-out .6s ease-in forwards; }
+.hero__tag.is-swap b, .hero__tag.is-swap small { animation: tag-swap .5s ease-out; }
+@media (prefers-reduced-motion: reduce) {
+  .hero__moto .pic.is-in img, .hero__moto .pic.is-out img, .hero__tag.is-swap b, .hero__tag.is-swap small { animation: none; }
+  .hero__video video { transition: none; }
+}
+
+.hero__dots { position: absolute; left: 50%; top: calc(100% + 8px); z-index: 2; display: flex; align-items: center; gap: 2px; translate: -50% 0; }
+.hero__pause { display: grid; place-items: center; width: 36px; height: 30px; margin-right: 4px; padding: 0; border: 0; border-radius: 8px; background: rgba(255, 255, 255, .12); color: var(--white); cursor: pointer; transition: background-color .15s; }
+.hero__pause:hover { background: rgba(255, 255, 255, .22); }
+.hero__pause .ico { width: 14px; height: 14px; }
+.hero__dot { position: relative; width: 38px; height: 30px; padding: 0; border: 0; background: none; cursor: pointer; }
+.hero__dot::before, .hero__dot i { content: ""; position: absolute; left: 4px; right: 4px; top: 13px; height: 4px; border-radius: 2px; }
+.hero__dot::before { background: rgba(255, 255, 255, .3); transition: background-color .15s; }
+.hero__dot:hover::before { background: rgba(255, 255, 255, .55); }
+.hero__dot i { background: var(--amber); transform: scaleX(0); transform-origin: 0 50%; }
+.hero__dot[aria-current="true"] i { transform: scaleX(var(--p, 0)); transition: transform .11s linear; }
+.hero__dot[aria-current="true"]::before { background: rgba(255, 255, 255, .5); }
+@media (max-width: 900px) { .hero__stage { margin-bottom: 40px; } }
+
 /* ---------- Seções ---------- */
 .sec { padding: 84px 0; }
 .sec--paper { background: var(--paper); }
@@ -166,7 +216,7 @@ h1, h2, h3, .display { font-family: var(--display); text-transform: uppercase; l
 .sec--ink .sec__sub { color: rgba(255, 255, 255, .75); }
 
 /* Filtros */
-.filters { display: grid; gap: 12px; }
+.filters { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
 .tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; scroll-snap-type: x proximity; }
 .tabs::-webkit-scrollbar { display: none; }
 .tab {
@@ -202,6 +252,8 @@ h1, h2, h3, .display { font-family: var(--display); text-transform: uppercase; l
 .card__name { font-size: 30px; }
 .card__name button { padding: 0; border: 0; background: none; text-align: left; text-transform: inherit; font: inherit; color: var(--ink); cursor: pointer; }
 .card__name button:hover { color: var(--blue); }
+.card__preco { display: flex; align-items: baseline; gap: 8px; margin-top: -6px; font-family: var(--display); font-size: 22px; color: var(--ink); }
+.card__preco span { font-family: var(--body); font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
 .card__facts { display: flex; flex-wrap: wrap; gap: 6px; }
 .card__facts li { padding: 4px 10px; border-radius: 8px; background: var(--paper); font-size: 12px; font-weight: 800; color: var(--text); }
 .card__actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -356,6 +408,8 @@ h1, h2, h3, .display { font-family: var(--display); text-transform: uppercase; l
 .mini b { display: block; font-family: var(--display); font-size: 24px; text-transform: uppercase; color: var(--ink); line-height: 1.05; }
 .mini span:not(.mini__pic) { font-size: 13px; color: var(--muted); }
 
+.cs-lead { margin-bottom: 18px; font-size: 15px; color: var(--text); }
+
 .fset { margin: 0 0 18px; padding: 0; border: 0; }
 .fset legend { padding: 0; margin-bottom: 8px; font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .fset legend em { font-style: normal; text-transform: none; letter-spacing: 0; font-weight: 600; }
@@ -369,6 +423,17 @@ h1, h2, h3, .display { font-family: var(--display); text-transform: uppercase; l
 .radios--seg { display: inline-flex; gap: 0; padding: 4px; border-radius: 14px; background: var(--paper); }
 .radios--seg span { border: 0; background: transparent; min-height: 40px; }
 .radios--seg input:checked + span { background: var(--ink); }
+
+/* Lista de prazos com o valor de cada um já visível (consórcio estimado) */
+.plans { display: grid; gap: 8px; margin: 4px 0 6px; }
+.plan { position: relative; }
+.plan input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.plan__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 13px 18px; border: 2px solid var(--line); border-radius: 12px; background: var(--white); transition: background-color .15s, border-color .15s; }
+.plan__row b { font-weight: 800; font-size: 15px; color: var(--ink); }
+.plan__row strong { font-family: var(--display); font-weight: 800; font-size: 22px; color: var(--ink); }
+.plan input:checked + .plan__row { border-color: var(--blue); background: var(--blue-50); }
+.plan input:checked + .plan__row strong { color: var(--blue); }
+.plan input:focus-visible + .plan__row { outline: 3px solid var(--amber); outline-offset: 2px; }
 
 .out { display: grid; gap: 2px; margin: 4px 0 6px; padding: 20px 22px; border-radius: var(--r); background: var(--ink); color: var(--white); }
 .out small { font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--amber); }

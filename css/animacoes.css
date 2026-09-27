@@ -64,6 +64,13 @@
   transition: scale .4s var(--ease);
 }
 .anim .hero__moto:hover .pic img { scale: 1.04; }
+/* Trocas (a cada 5 s): a moto sai pela esquerda e a próxima entra pela direita, sem o atraso da abertura. */
+@keyframes moto-out { to { opacity: 0; transform: translateX(-170px) skewX(12deg) scale(.95); filter: blur(6px); } }
+.anim .hero__moto .pic.is-in img { animation: moto-in .95s var(--ease) backwards, float 7s ease-in-out .95s infinite; }
+.anim .hero__moto .pic.is-out img { animation: moto-out .6s cubic-bezier(.5, 0, .9, .4) forwards; }
+.anim .hero__brand { animation: rise .8s var(--ease) backwards; }
+.anim .hero__dots { animation: rise .8s var(--ease) 1.3s backwards; }
+.anim .hero__dot:active::before, .anim .hero__pause:active { scale: .92; }
 .anim .hero__tag { animation: tag-in .8s var(--ease) 1s backwards; translate: calc(var(--px, 0) * 26px) calc(var(--py, 0) * 14px); }
 .anim .who { animation: who-in .8s var(--spring) 1.15s backwards, bob 6s ease-in-out 2s infinite; translate: calc(var(--px, 0) * 30px) calc(var(--py, 0) * 18px); }
 .anim .hero__stage::before {
@@ -180,6 +187,9 @@
 /* Simulador e formulários */
 .anim .radios input:checked + span { animation: chip-pop .38s var(--spring); }
 @keyframes chip-pop { 0% { scale: .9; } 60% { scale: 1.07; } 100% { scale: 1; } }
+.anim .plan__row { transition: background-color .2s, border-color .2s; }
+.anim .plan input:checked + .plan__row { animation: chip-pop .38s var(--spring); }
+.anim .plan input:active + .plan__row { scale: .98; }
 .anim .radios span { transition: background-color .2s, border-color .2s, color .2s, scale .15s; }
 .anim .radios label:active span { scale: .95; }
 .anim .out { position: relative; overflow: hidden; }

@@ -50,6 +50,22 @@
     return n.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }).replace(/ /g, " ");
   }
 
+  function fmtDataCurta(iso) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || "");
+    return m ? m[3] + "/" + m[2] + "/" + m[1] : "";
+  }
+
+  // Aproximação do consórcio (sem tabela real da administradora): preço sugerido pela Yamaha
+  // mais uma taxa de administração diluída no prazo, menos a entrada, mais um seguro mensal
+  // sobre o valor do crédito. SITE.consorcioTaxaAdm/consorcioSeguroMensal ajustam a aproximação
+  // quando o cliente souber os valores reais da administradora que ele usa.
+  function parcelaEstimada(preco, entrada, prazo) {
+    var taxa = typeof SITE.consorcioTaxaAdm === "number" ? SITE.consorcioTaxaAdm : 0.15;
+    var seguro = typeof SITE.consorcioSeguroMensal === "number" ? SITE.consorcioSeguroMensal : 0.0012;
+    var total = preco * (1 + taxa) - Math.max(entrada || 0, 0);
+    return Math.max(total, 0) / prazo + preco * seguro;
+  }
+
   function fmtTel(v) {
     var d = digits(v);
     if (d.indexOf("55") === 0 && d.length > 11) d = d.slice(2);
@@ -251,15 +267,139 @@
     }
   }
 
-  // Moto em destaque na abertura: a do config (SITE.destaque), senão a NMAX, senão a primeira com foto.
+  // Motos da abertura: uma por categoria, na ordem em que aparecem (a R15 abre, combinando com o vídeo de fundo).
+  var HERO_PADRAO = ["r15-abs", "nmax-abs", "mt-03", "lander", "fazer-fz25", "tenere-700"];
+  var HERO_MS = 5000;
+
+  function heroLista() {
+    var ids = [];
+    if (SITE.destaque) ids.push(SITE.destaque);
+    ((SITE.destaques && SITE.destaques.length) ? SITE.destaques : HERO_PADRAO).forEach(function (id) { if (ids.indexOf(id) < 0) ids.push(id); });
+    var lista = ids.map(findMoto).filter(function (m) { return m && m.imgs && m.imgs.length; });
+    return lista.length ? lista : MOTOS.filter(function (m) { return m.imgs && m.imgs.length; }).slice(0, 1);
+  }
+
+  // A cada 5 s troca a moto da abertura. Pausa com o mouse em cima, com o foco dentro, com a aba em segundo plano,
+  // fora da tela ou com uma gaveta aberta; quem pede "reduzir movimento" fica sem troca automática (os pontos continuam).
   function setupHero() {
-    var m = findMoto(SITE.destaque) || findMoto("nmax-abs") || MOTOS.filter(function (x) { return x.imgs && x.imgs.length; })[0];
-    if (!m) { $("#stage").hidden = true; return; }
-    var btn = $("#hero-moto");
-    btn.setAttribute("data-id", m.id);
-    btn.setAttribute("aria-label", "Ver ficha da " + m.nome);
-    btn.innerHTML = picHTML(m, 0, true);
-    $("#hero-tag").innerHTML = "<small>Em destaque</small><b>" + esc(m.nome) + "</b>";
+    var lista = heroLista();
+    if (!lista.length) { $("#stage").hidden = true; return; }
+    var stage = $("#stage"), btn = $("#hero-moto"), tag = $("#hero-tag");
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var idx = 0, elapsed = 0, last = Date.now();
+    var hold = { hover: false, focus: false, offscreen: false }, userPause = reduce;
+    var dots = [], pauseBtn = null;
+
+    function show(i, animar) {
+      var m = lista[i];
+      idx = i; elapsed = 0;
+      btn.setAttribute("data-id", m.id);
+      btn.setAttribute("aria-label", "Ver ficha da " + m.nome);
+      tag.innerHTML = "<small>Em destaque</small><b>" + esc(m.nome) + "</b>";
+      var velho = $(".pic", btn);
+      if (!animar || !velho) {
+        btn.innerHTML = picHTML(m, 0, true);
+      } else {
+        var caixa = document.createElement("div");
+        caixa.innerHTML = picHTML(m, 0, true);
+        var novo = caixa.firstChild;
+        novo.classList.add("is-in");
+        velho.classList.add("is-out");
+        btn.appendChild(novo);
+        window.setTimeout(function () { if (velho.parentNode) velho.parentNode.removeChild(velho); }, reduce ? 0 : 900);
+        tag.classList.remove("is-swap"); void tag.offsetWidth; tag.classList.add("is-swap");
+      }
+      dots.forEach(function (d, k) {
+        if (k === i) d.setAttribute("aria-current", "true"); else d.removeAttribute("aria-current");
+        d.style.setProperty("--p", "0");
+      });
+      var prox = lista[(i + 1) % lista.length];
+      if (prox && prox.imgs && prox.imgs[0]) new Image().src = prox.imgs[0];   // a próxima já vem pronta
+    }
+
+    show(0, false);
+    if (lista.length < 2) return;
+
+    var bar = document.createElement("div");
+    bar.className = "hero__dots"; bar.setAttribute("role", "group"); bar.setAttribute("aria-label", "Motos em destaque");
+    bar.innerHTML = '<button type="button" class="hero__pause" aria-pressed="' + userPause + '" aria-label="' +
+      (userPause ? "Retomar a troca automática" : "Pausar a troca automática") + '">' + icon(userPause ? "play" : "pause") + "</button>" +
+      lista.map(function (m, k) { return '<button type="button" class="hero__dot" data-hero="' + k + '" aria-label="Ver ' + esc(m.nome) + '"><i></i></button>'; }).join("");
+    stage.appendChild(bar);
+    dots = $$(".hero__dot", bar);
+    pauseBtn = $(".hero__pause", bar);
+    dots[0].setAttribute("aria-current", "true");
+
+    function rodando() {
+      return !userPause && !hold.hover && !hold.focus && !hold.offscreen && !document.hidden && !document.body.classList.contains("is-locked");
+    }
+
+    window.setInterval(function () {
+      var agora = Date.now(), dt = agora - last;
+      last = agora;
+      if (!rodando()) return;
+      elapsed += Math.min(dt, 250);
+      if (elapsed >= HERO_MS) { show((idx + 1) % lista.length, true); return; }
+      dots[idx].style.setProperty("--p", (elapsed / HERO_MS).toFixed(3));
+    }, 100);
+
+    bar.addEventListener("click", function (e) {
+      var d = e.target.closest(".hero__dot");
+      if (d) { show(Number(d.getAttribute("data-hero")), true); return; }
+      if (e.target.closest(".hero__pause")) {
+        userPause = !userPause;
+        pauseBtn.setAttribute("aria-pressed", String(userPause));
+        pauseBtn.setAttribute("aria-label", userPause ? "Retomar a troca automática" : "Pausar a troca automática");
+        pauseBtn.innerHTML = icon(userPause ? "play" : "pause");
+      }
+    });
+    stage.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") hold.hover = true; });
+    stage.addEventListener("pointerleave", function () { hold.hover = false; });
+    stage.addEventListener("focusin", function () { hold.focus = true; });
+    stage.addEventListener("focusout", function () { hold.focus = false; });
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(function (es) { hold.offscreen = !es[0].isIntersecting; }).observe(stage);
+    }
+  }
+
+  // Vídeo de fundo da abertura (SITE.videoFundo): a capa aparece na hora; o vídeo só carrega depois da página,
+  // fica mudo, em loop e pausa quando sai da tela. Sem vídeo em economia de dados, conexão lenta ou "reduzir movimento".
+  function setupHeroVideo() {
+    var base = SITE.videoFundo, hero = $(".hero");
+    if (!base || !hero) return;
+    var wrap = document.createElement("div");
+    wrap.className = "hero__video"; wrap.setAttribute("aria-hidden", "true");
+    wrap.style.backgroundImage = 'url("' + base + '.webp")';
+    hero.insertBefore(wrap, hero.firstChild);
+    hero.classList.add("has-video");
+
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var conn = navigator.connection || {};
+    if (reduce || conn.saveData || /2g$/.test(conn.effectiveType || "")) return;
+
+    function iniciar() {
+      var v = document.createElement("video");
+      v.muted = true; v.defaultMuted = true; v.loop = true; v.playsInline = true;
+      v.setAttribute("muted", ""); v.setAttribute("playsinline", ""); v.setAttribute("aria-hidden", "true"); v.tabIndex = -1;
+      v.preload = "auto";
+      v.src = base + (window.matchMedia("(max-width: 767px)").matches ? "-m" : "") + ".mp4";
+      v.addEventListener("playing", function () { v.classList.add("is-on"); });
+      v.addEventListener("error", function () { if (v.parentNode) v.parentNode.removeChild(v); });
+      wrap.appendChild(v);
+
+      var visivel = true;
+      function tocar() {
+        if (visivel && !document.hidden) { var p = v.play(); if (p && p.catch) p.catch(function () { /* autoplay bloqueado: fica a capa */ }); }
+        else v.pause();
+      }
+      if (window.IntersectionObserver) {
+        new IntersectionObserver(function (es) { visivel = es[0].isIntersecting; tocar(); }).observe(hero);
+      }
+      document.addEventListener("visibilitychange", tocar);
+      tocar();
+    }
+    if (document.readyState === "complete") window.setTimeout(iniciar, 200);
+    else window.addEventListener("load", function () { window.setTimeout(iniciar, 200); });
   }
 
   /* ---------------- vitrine ---------------- */
@@ -310,6 +450,7 @@
           '<span class="card__cat">' + esc(m.categoria) + "</span>" + picHTML(m) + "</button>" +
         '<div class="card__body">' +
           '<h3 class="card__name"><button type="button" data-open="ficha">' + esc(m.nome) + "</button></h3>" +
+          (m.preco ? '<p class="card__preco">' + brl(m.preco) + '<span>à vista, sugerido</span></p>' : "") +
           (chips ? '<ul class="card__facts">' + chips + "</ul>" : "") +
           '<div class="card__actions">' +
             '<button type="button" class="btn btn--line btn--sm" data-open="consorcio">Consórcio</button>' +
@@ -395,7 +536,8 @@
 
     var pares = [
       [/létric/i.test(m.cilindrada || "") ? "Motor" : "Cilindrada", m.cilindrada],
-      ["Potência", potencia(m)], ["Torque", curto(fato(m, "Torque máximo"))], ["Peso", fato(m, "Peso")]
+      ["Potência", potencia(m)], ["Torque", curto(fato(m, "Torque máximo"))], ["Peso", fato(m, "Peso")],
+      ["Preço sugerido", m.preco ? brl(m.preco) : ""]
     ].filter(function (p) { return p[1]; });
 
     var destaques = (m.destaques || []).map(function (d, i) {
@@ -518,9 +660,21 @@
     return '<label><input type="radio" name="' + name + '" value="' + value + '"' + (checked ? " checked" : "") + (disabled ? " disabled" : "") + "><span>" + text + "</span></label>";
   }
 
+  function prazosEstimativa() {
+    var lista = (SITE.prazosConsorcio || []).slice().sort(function (a, b) { return b - a; });
+    return lista.length ? lista : [60, 48, 36, 24, 12];
+  }
+
+  // Uma linha por prazo, todas visíveis ao mesmo tempo (mais fácil de comparar do que uma
+  // caixa só que troca de valor). O valor de cada linha é preenchido/atualizado por refreshSim.
+  function planRow(prazo, checked) {
+    return '<label class="plan"><input type="radio" name="prazo" value="' + prazo + '"' + (checked ? " checked" : "") + '>' +
+      '<span class="plan__row"><b>' + prazo + "x</b><strong data-plano=\"" + prazo + "\">—</strong></span></label>";
+  }
+
   function buildConsorcio(m) {
     $("#dc-title").textContent = m.nome;
-    var t = tiers(m), corpo;
+    var t = tiers(m), corpo, legal;
 
     if (t.length) {
       corpo =
@@ -528,18 +682,30 @@
           t.map(function (x, i) { return radioChip("tier", x.key, x.titulo, i === 0); }).join("") + "</div></fieldset>" : "") +
         '<fieldset class="fset"><legend>Prazo</legend><div class="radios" id="prazos"></div></fieldset>' +
         '<div class="out" aria-live="polite"><small>Parcela de referência</small><strong id="out-val">—</strong><span id="out-sub"></span></div>';
+      legal = "Valores de referência. A parcela final depende do grupo, do crédito e da administradora.";
+    } else if (m.preco) {
+      var prazos = prazosEstimativa(), padrao = prazos[Math.floor(prazos.length / 2)] || prazos[0];
+      corpo =
+        '<p class="cs-lead">' + esc(m.nome) + " custa " + brl(m.preco) + " na tabela oficial da Yamaha" +
+          (m.precoEm ? " (" + fmtDataCurta(m.precoEm) + ")" : "") + ". Informe sua entrada, se tiver, e veja como ficaria a parcela em cada prazo — " +
+          "é uma estimativa; confirme os valores exatos no WhatsApp.</p>" +
+        field("cs-entrada", "entrada", "Entrada (opcional)", 'type="text" inputmode="numeric" autocomplete="off" placeholder="R$ 0"') +
+        '<fieldset class="fset"><legend>Prazo — toque para escolher</legend><div class="plans">' +
+          prazos.map(function (p) { return planRow(p, p === padrao); }).join("") + "</div></fieldset>";
+      legal = "";
     } else {
       corpo =
         '<fieldset class="fset"><legend>Prazo de interesse <em>(opcional)</em></legend><div class="radios">' +
           (SITE.prazosConsorcio || []).map(function (p) { return radioChip("prazo", p, p + "x"); }).join("") + "</div></fieldset>" +
         '<div class="out out--soft"><small>Simulação sob medida</small><strong>Vamos calcular pra você</strong>' +
           "<span>" + voz("Eu monto", "A gente monta") + " a simulação com o crédito e o prazo que cabem no seu bolso.</span></div>";
+      legal = "Valores de referência. A parcela final depende do grupo, do crédito e da administradora.";
     }
 
     $("#dc-body").innerHTML =
       '<div class="mini"><span class="mini__pic">' + picHTML(m, 0, true) + '</span><div><b>' + esc(m.nome) + "</b><span>" + esc([m.categoria, m.cilindrada].filter(Boolean).join(" · ")) + "</span></div></div>" +
       corpo +
-      '<p class="legal">Valores de referência. A parcela final depende do grupo, do crédito e da administradora.</p>' +
+      (legal ? '<p class="legal">' + legal + "</p>" : "") +
       howHTML("consorcio");
 
     $("#dc-bar").innerHTML =
@@ -576,6 +742,17 @@
         $("#out-val").textContent = brl(Number(v));
         $("#out-sub").textContent = "por mês, em " + pr.value + "x" + (t.length > 1 ? " · " + x.titulo.toLowerCase() : "");
         msg += " Simulação escolhida: " + txt + (t.length > 1 ? " (" + x.titulo.toLowerCase() + ")" : "") + ".";
+      }
+    } else if (m.preco) {
+      var entradaEl = $("#cs-entrada", body);
+      var entrada = entradaEl ? Number(digits(entradaEl.value)) : 0;
+      $$("[data-plano]", body).forEach(function (el) {
+        el.textContent = brl(parcelaEstimada(m.preco, entrada, Number(el.getAttribute("data-plano"))));
+      });
+      if (pr) {
+        var parcela = parcelaEstimada(m.preco, entrada, Number(pr.value));
+        msg += " Estimativa (não é proposta oficial): " + pr.value + "x de " + brl(parcela) +
+          (entrada ? ", com entrada de " + brl(entrada) : "") + ".";
       }
     } else if (pr) {
       msg += " Prazo de interesse: " + pr.value + "x.";
@@ -886,6 +1063,11 @@
       if (id === "f-ent") e.target.value = maskMoney(e.target.value);
       if (id === "f-cpf") e.target.value = maskCPF(e.target.value);
       if (id === "f-nasc") e.target.value = maskDate(e.target.value);
+      if (id === "cs-entrada") {
+        e.target.value = maskMoney(e.target.value);
+        var m = findMoto(state.currentId);
+        if (m && dlgs.consorcio.open) refreshSim(m);
+      }
     });
 
     document.addEventListener("submit", function (e) {
@@ -911,6 +1093,7 @@
 
   setupSite();
   setupHero();
+  setupHeroVideo();
   renderFilters();
   renderGrid();
   renderCaminhos();

@@ -197,6 +197,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": 34842.0,
+    "precoEm": "2026-09-27",
     "fonte": "https://www.yamaha-motor.com.br/product/neos-connected-155430"
   },
   {
@@ -385,6 +387,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": 17895.0,
+    "precoEm": "2026-09-27",
     "fonte": "https://www.yamaha-motor.com.br/product/fluo-abs-hybrid-connected-759425"
   },
   {
@@ -573,6 +577,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": 15085.0,
+    "precoEm": "2026-09-27",
     "fonte": "https://www.yamaha-motor.com.br/product/yamaha-zr-hybrid-connected-765005"
   },
   {
@@ -757,6 +763,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": 20401.0,
+    "precoEm": "2026-09-27",
     "fonte": "https://www.yamaha-motor.com.br/product/aerox-abs-connected-151281"
   },
   {
@@ -945,6 +953,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": 24714.0,
+    "precoEm": "2026-09-27",
     "fonte": "https://www.yamaha-motor.com.br/product/nova-nmax-abs-connected-151482"
   },
   {
@@ -1133,6 +1143,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": 40382.0,
+    "precoEm": "2026-09-27",
     "fonte": "https://www.yamaha-motor.com.br/product/xmax-300-connected-769713"
   },
   {
@@ -1329,6 +1341,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": null,
+    "precoEm": "",
     "fonte": "https://www.yamaha-motor.com.br/product/factor-759373"
   },
   {
@@ -1525,6 +1539,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": 20401.0,
+    "precoEm": "2026-09-27",
     "fonte": "https://www.yamaha-motor.com.br/product/nova-factor-dx-157532"
   },
   {
@@ -1717,6 +1733,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": null,
+    "precoEm": "",
     "fonte": "https://www.yamaha-motor.com.br/product/nova-fazer-fz15-abs-connected-770617"
   },
   {
@@ -1906,6 +1924,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": 26922.0,
+    "precoEm": "2026-09-27",
     "fonte": "https://www.yamaha-motor.com.br/product/fazer-fz25-connected-155370"
   },
   {
@@ -2093,6 +2113,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": 36084.0,
+    "precoEm": "2026-09-27",
     "fonte": "https://www.yamaha-motor.com.br/product/nova-mt-03-connected-155521"
   },
   {
@@ -2282,6 +2304,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": 60131.0,
+    "precoEm": "2026-09-27",
     "fonte": "https://www.yamaha-motor.com.br/product/nova-mt-07-connected-155684"
   },
   {
@@ -2477,6 +2501,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": 24174.0,
+    "precoEm": "2026-09-27",
     "fonte": "https://www.yamaha-motor.com.br/product/nova-crosser-s-abs-connected-770796"
   },
   {
@@ -2672,6 +2698,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": 24375.0,
+    "precoEm": "2026-09-27",
     "fonte": "https://www.yamaha-motor.com.br/product/nova-crosser-z-abs-connected-770797"
   },
   {
@@ -2861,6 +2889,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": 30936.0,
+    "precoEm": "2026-09-27",
     "fonte": "https://www.yamaha-motor.com.br/product/lander-connected-150305"
   },
   {
@@ -3051,6 +3081,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": 75160.0,
+    "precoEm": "2026-09-27",
     "fonte": "https://www.yamaha-motor.com.br/product/tenere-700-156320"
   },
   {
@@ -3244,6 +3276,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": 24220.0,
+    "precoEm": "2026-09-27",
     "fonte": "https://www.yamaha-motor.com.br/product/r15-abs-151514"
   },
   {
@@ -3431,6 +3465,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": null,
+    "precoEm": "",
     "fonte": "https://www.yamaha-motor.com.br/product/r3-abs-connected-770613"
   },
   {
@@ -3618,6 +3654,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": null,
+    "precoEm": "",
     "fonte": "https://www.yamaha-motor.com.br/product/nova-yamaha-r7-770273"
   },
   {
@@ -3805,6 +3843,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": 61929.0,
+    "precoEm": "2026-09-27",
     "fonte": "https://www.yamaha-motor.com.br/product/nova-yamaha-tracer-7-770271"
   },
   {
@@ -3966,6 +4006,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": 22209.0,
+    "precoEm": "2026-09-27",
     "fonte": "https://www.yamaha-motor.com.br/product/tt-r-230-770702"
   },
   {
@@ -4131,6 +4173,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": null,
+    "precoEm": "",
     "fonte": "https://www.yamaha-motor.com.br/product/yz125-2027-771005"
   },
   {
@@ -4296,6 +4340,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": null,
+    "precoEm": "",
     "fonte": "https://www.yamaha-motor.com.br/product/yz250-770970"
   },
   {
@@ -4441,6 +4487,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": null,
+    "precoEm": "",
     "fonte": "https://www.yamaha-motor.com.br/product/yz450f-157341"
   },
   {
@@ -4602,6 +4650,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": null,
+    "precoEm": "",
     "fonte": "https://www.yamaha-motor.com.br/product/yz65-150291"
   },
   {
@@ -4763,6 +4813,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": null,
+    "precoEm": "",
     "fonte": "https://www.yamaha-motor.com.br/product/yz85lw-150322"
   },
   {
@@ -4941,6 +4993,8 @@ window.MOTOS = [
         ]
       }
     ],
+    "preco": null,
+    "precoEm": "",
     "fonte": "https://www.yamaha-motor.com.br/product/pw50-150324"
   }
 ];

@@ -141,6 +141,7 @@
     var h1 = $("#titulo");
     if (h1) {
       var words = h1.textContent.trim().split(/\s+/);
+      h1.setAttribute("aria-label", words.join(" "));     // o nome acessível não depende de como o navegador junta as palavras
       h1.innerHTML = words.map(function (w, i) { return '<span class="w"><span style="--wi:' + i + '">' + esc(w) + "</span></span>"; }).join(" ");
     }
 
