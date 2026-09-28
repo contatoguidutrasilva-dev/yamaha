@@ -307,6 +307,8 @@ h1, h2, h3, .display { font-family: var(--display); text-transform: uppercase; l
 .footer__links { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 14px; }
 .footer__links a { font-weight: 700; color: var(--amber); text-underline-offset: 3px; }
 .footer__legal { margin-top: 18px; max-width: 92ch; font-size: 12px; color: rgba(255, 255, 255, .55); }
+.footer__painel { display: inline-block; margin-top: 14px; font-size: 12px; color: rgba(255, 255, 255, .4); text-underline-offset: 3px; }
+.footer__painel:hover { color: rgba(255, 255, 255, .7); }
 @media (max-width: 767px) { .footer { padding-bottom: 104px; } }
 
 /* Barra de WhatsApp (celular) */

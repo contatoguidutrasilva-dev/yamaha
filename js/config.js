@@ -90,6 +90,13 @@ window.SITE = {
   // IDs de modelos (ver js/motos.js) que este vendedor NÃO trabalha e devem sumir do site. Ex.: ["yz65", "pw50"].
   ocultar: [],
 
+  // Painel do vendedor (painel.html): a Emily muda o preço de uma moto preenchendo um Formulário
+  // Google (embutido na página do painel), sem mexer em código. Passo a passo em
+  // _ferramentas/painel-preco.md no modelo. Vazio (qualquer um dos três) → painel desligado.
+  painelSenha: "Vendedora456",  // senha combinada com o Guilherme (27/09/2026); login também pede um nome, só decorativo
+  painelFormEmbed: "",          // pendente: falta criar o Formulário (ver briefing.md)
+  painelPrecoCsv: "",           // pendente: falta publicar a planilha de respostas em CSV (ver briefing.md)
+
   /* ---------- Movimento ---------- */
 
   // Animações e interações (js/animacoes.js + css/animacoes.css). false → o site fica sem animação.

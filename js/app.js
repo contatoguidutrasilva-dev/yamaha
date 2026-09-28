@@ -450,7 +450,7 @@
           '<span class="card__cat">' + esc(m.categoria) + "</span>" + picHTML(m) + "</button>" +
         '<div class="card__body">' +
           '<h3 class="card__name"><button type="button" data-open="ficha">' + esc(m.nome) + "</button></h3>" +
-          (m.preco ? '<p class="card__preco">' + brl(m.preco) + '<span>à vista, sugerido</span></p>' : "") +
+          (m.preco ? '<p class="card__preco">' + brl(m.preco) + "<span>" + (m.precoManual ? "à vista" : "à vista, sugerido") + "</span></p>" : "") +
           (chips ? '<ul class="card__facts">' + chips + "</ul>" : "") +
           '<div class="card__actions">' +
             '<button type="button" class="btn btn--line btn--sm" data-open="consorcio">Consórcio</button>' +
@@ -537,7 +537,7 @@
     var pares = [
       [/létric/i.test(m.cilindrada || "") ? "Motor" : "Cilindrada", m.cilindrada],
       ["Potência", potencia(m)], ["Torque", curto(fato(m, "Torque máximo"))], ["Peso", fato(m, "Peso")],
-      ["Preço sugerido", m.preco ? brl(m.preco) : ""]
+      [m.precoManual ? "Preço" : "Preço sugerido", m.preco ? brl(m.preco) : ""]
     ].filter(function (p) { return p[1]; });
 
     var destaques = (m.destaques || []).map(function (d, i) {
@@ -686,7 +686,7 @@
     } else if (m.preco) {
       var prazos = prazosEstimativa(), padrao = prazos[Math.floor(prazos.length / 2)] || prazos[0];
       corpo =
-        '<p class="cs-lead">' + esc(m.nome) + " custa " + brl(m.preco) + " na tabela oficial da Yamaha" +
+        '<p class="cs-lead">' + esc(m.nome) + " custa " + brl(m.preco) + (m.precoManual ? " aqui na loja" : " na tabela oficial da Yamaha") +
           (m.precoEm ? " (" + fmtDataCurta(m.precoEm) + ")" : "") + ". Informe sua entrada, se tiver, e veja como ficaria a parcela em cada prazo — " +
           "é uma estimativa; confirme os valores exatos no WhatsApp.</p>" +
         field("cs-entrada", "entrada", "Entrada (opcional)", 'type="text" inputmode="numeric" autocomplete="off" placeholder="R$ 0"') +
@@ -1091,6 +1091,65 @@
     if (m && findMoto(m[1])) openModal("ficha", m[1]);
   }
 
+  // Preço editado pelo vendedor no painel (painel.html), guardado num Formulário Google e lido
+  // daqui como CSV publicado. Sem SITE.painelPrecoCsv, isso não roda e cada moto mostra só o
+  // preço oficial da Yamaha. Ver _ferramentas/painel-preco.md.
+  function parseCSV(texto) {
+    var linhas = [], linha = [], campo = "", aspas = false;
+    for (var i = 0; i < texto.length; i++) {
+      var c = texto[i];
+      if (aspas) {
+        if (c === '"') { if (texto[i + 1] === '"') { campo += '"'; i++; } else aspas = false; }
+        else campo += c;
+      } else if (c === '"') aspas = true;
+      else if (c === ",") { linha.push(campo); campo = ""; }
+      else if (c === "\n" || c === "\r") {
+        if (c === "\r" && texto[i + 1] === "\n") i++;
+        linha.push(campo); campo = ""; linhas.push(linha); linha = [];
+      } else campo += c;
+    }
+    if (campo || linha.length) { linha.push(campo); linhas.push(linha); }
+    return linhas.filter(function (l) { return l.length > 1 || l[0]; });
+  }
+
+  function carregarPrecoPainel() {
+    if (!SITE.painelPrecoCsv) return;
+    fetch(SITE.painelPrecoCsv + (SITE.painelPrecoCsv.indexOf("?") >= 0 ? "&" : "?") + "_=" + Date.now())
+      .then(function (r) { return r.text(); })
+      .then(function (texto) {
+        var linhas = parseCSV(texto);
+        linhas.shift(); // cabeçalho: Carimbo de data/hora, Qual moto?, Novo preço (R$)
+        var porNome = {};
+        linhas.forEach(function (l) {
+          var nome = (l[1] || "").trim(), preco = Number(String(l[2] || "").replace(/\D/g, ""));
+          if (!nome) return;
+          if (preco > 0) porNome[nome] = preco; else delete porNome[nome];
+        });
+        var mudou = false;
+        MOTOS.forEach(function (m) {
+          var preco = porNome[m.nome];
+          if (preco) { m.preco = preco; m.precoEm = ""; m.precoManual = true; mudou = true; }
+        });
+        if (mudou) renderGrid();
+      })
+      .catch(function () { /* painel fora do ar não pode quebrar o site */ });
+  }
+
+  // Modo local do painel (sem Formulário/CSV configurado ainda): preço editado em painel.html fica
+  // só em localStorage, então só aparece pra quem visita o site NESTE MESMO aparelho/navegador.
+  // Mesma chave que js/painel.js usa. Roda sempre (é local, não tem custo de rede) e é sobrescrito
+  // pelo modo real (carregarPrecoPainel, acima) se o CSV também estiver configurado.
+  function carregarPrecoLocal() {
+    var precos;
+    try { precos = JSON.parse(localStorage.getItem("ym_precos_loja") || "{}"); } catch (e) { return; }
+    var mudou = false;
+    MOTOS.forEach(function (m) {
+      var preco = precos[m.id];
+      if (preco) { m.preco = preco; m.precoEm = ""; m.precoManual = true; mudou = true; }
+    });
+    if (mudou) renderGrid();
+  }
+
   setupSite();
   setupHero();
   setupHeroVideo();
@@ -1100,4 +1159,6 @@
   bind();
   openFromHash();
   window.addEventListener("hashchange", openFromHash);
+  carregarPrecoLocal();
+  carregarPrecoPainel();
 })();

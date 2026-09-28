@@ -81,8 +81,8 @@
     linear-gradient(90deg, transparent, rgba(255, 255, 255, .7), transparent) 0 66% / 38% 2px no-repeat;
   animation: streaks 1.15s cubic-bezier(.3, .6, .2, 1) .35s both;
 }
-.anim .hero__cta .btn--wa, .anim .stickybar .btn--wa { animation: ring 3.2s ease-out 2.6s infinite; }
-.anim .hero__cta .btn--wa:hover, .anim .stickybar .btn--wa:hover { animation: none; }
+.anim .stickybar .btn--wa { animation: ring 3.2s ease-out 2.6s infinite; }
+.anim .stickybar .btn--wa:hover { animation: none; }
 .anim .stickybar { animation: bar-in .7s var(--ease) 1.4s backwards; }
 
 /* ---------- Faixa de categorias (criada pelo JS) ---------- */
@@ -142,6 +142,7 @@
   background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .38) 50%, transparent 70%); transition: transform .7s var(--ease);
 }
 .anim .btn--wa:hover::before, .anim .btn--amber:hover::before, .anim .btn--blue:hover::before { transform: translateX(130%) skewX(-18deg); }
+.anim .hero__cta .btn::before { content: none; }
 .anim .mag { transition: background-color .15s, color .15s, border-color .15s, transform .12s, translate .3s var(--ease); }
 .rip { position: absolute; border-radius: 50%; background: currentColor; opacity: .22; pointer-events: none; transform: scale(0); animation: rip .65s ease-out forwards; }
 @keyframes rip { to { transform: scale(1); opacity: 0; } }

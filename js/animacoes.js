@@ -104,7 +104,7 @@
     rv($(".filters")); rv($("#count"));
     $$(".path").forEach(function (el) { rv(el, "pop"); });
     $$(".where__card, .where__map").forEach(function (el) { rv(el, "up"); });
-    $$(".footer .wrap > *").forEach(function (el) { rv(el, "up"); });
+    $$(".footer .wrap > *:not(.footer__painel)").forEach(function (el) { rv(el, "up"); });
   }
 
   /* ---------------- barra superior: progresso e seção ativa ---------------- */
@@ -333,7 +333,7 @@
   function setupButtons() {
     document.addEventListener("pointerdown", function (e) {
       var b = e.target.closest && e.target.closest(".btn");
-      if (!b || b.disabled) return;
+      if (!b || b.disabled || b.closest(".hero__cta")) return;
       var r = b.getBoundingClientRect(), s = Math.max(r.width, r.height) * 2.2;
       var i = document.createElement("span");
       i.className = "rip";
@@ -343,7 +343,7 @@
     });
 
     if (!FINE) return;
-    var els = $$(".hero__cta .btn, .hero__cta .btn-round, .topbar .btn, .path__cta .btn");
+    var els = $$(".topbar .btn, .path__cta .btn");
     els.forEach(function (el) { el.classList.add("mag"); el._tx = 0; el._ty = 0; });
     var mx = -999, my = -999, q = 0;
     function update() {

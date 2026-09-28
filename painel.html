@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Painel do vendedor</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0a0f2e">
+  <link rel="icon" href="assets/favicon.png" type="image/png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/painel.css">
+</head>
+<body class="painel">
+  <header class="painel__top">
+    <div class="painel__top-esq">
+      <span class="painel__brand">Painel do vendedor</span>
+      <a class="painel__voltar" href="index.html">← Voltar pro site</a>
+    </div>
+    <span class="painel__loja" id="pn-loja"></span>
+  </header>
+
+  <main class="painel__wrap">
+    <section class="painel__login" id="pn-login">
+      <h1>Entrar</h1>
+      <p>Digite seu nome e a senha pra mudar o preço das motos.</p>
+      <form id="pn-login-form">
+        <input type="text" id="pn-nome" placeholder="Seu nome" autocomplete="name">
+        <input type="password" id="pn-senha" placeholder="Senha" autocomplete="current-password" required>
+        <label class="painel__lembrar"><input type="checkbox" id="pn-lembrar">Salvar a senha neste aparelho</label>
+        <button class="btn btn--blue" type="submit">Entrar</button>
+      </form>
+      <p class="painel__erro" id="pn-login-erro" hidden></p>
+      <p class="painel__aviso" id="pn-sem-url" hidden>
+        Esse site ainda não tem o painel configurado — falta preencher <code>painelSenha</code>
+        em <code>SITE</code> (js/config.js).
+      </p>
+    </section>
+
+    <section class="painel__lista" id="pn-lista" hidden>
+      <div class="painel__head">
+        <h1>Preço das motos</h1>
+        <input type="search" id="pn-busca" placeholder="Buscar moto...">
+      </div>
+      <p class="painel__dica">Preço oficial da Yamaha e o preço da loja (quando já foi trocado).</p>
+      <p class="painel__aviso-local" id="pn-aviso-local" hidden>
+        Modo de teste: o preço que você salvar aqui só aparece <b>neste aparelho</b>, ainda não pra
+        quem mais visita o site. Pra valer pra todo mundo, configure o formulário — ver
+        <code>_ferramentas/painel-preco.md</code> no modelo.
+      </p>
+      <div class="painel__linhas" id="pn-linhas"></div>
+
+      <div class="painel__form" id="pn-form-box">
+        <h2>Mudar um preço</h2>
+        <p>Escolhe a moto, digita o preço novo (só números) e envia. Digitar <b>0</b> volta pro preço oficial da Yamaha. Leva um minutinho pra atualizar aqui em cima.</p>
+        <iframe id="pn-form-frame" title="Formulário de preço" loading="lazy"></iframe>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/motos.js"></script>
+  <script src="js/painel.js"></script>
+</body>
+</html>
