@@ -1,0 +1,211 @@
+/* ==========================================================
+   Animações e interações — camada opcional por cima do style.css.
+   - Só vale com a classe .anim no <html> (index.html põe, a menos que a pessoa
+     tenha pedido "reduzir movimento"). Sem a classe, o site fica como era.
+   - Para desligar: SITE.animacoes = false no config.js, ou tirar este arquivo
+     e js/animacoes.js do index.html.
+   - As fotos das motos usam mix-blend-mode: multiply para "apagar" o fundo branco.
+     Por isso NÃO se aplica transform/opacity/animation em elementos que ficam
+     ENTRE o fundo (gradiente) e a <img>; anima-se a própria <img> ou um ancestral
+     que já carrega o fundo.
+   ========================================================== */
+:root {
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --spring: cubic-bezier(.3, 1.3, .5, 1);
+}
+
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* ---------- Barra superior: progresso e seção ativa ---------- */
+.progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; pointer-events: none; }
+.progress i { display: block; height: 100%; background: linear-gradient(90deg, var(--blue), var(--amber)); transform-origin: 0 50%; transform: scaleX(0); }
+.anim .topbar { transition: box-shadow .3s; }
+.anim .topbar.is-stuck { box-shadow: 0 16px 30px -20px rgba(0, 0, 0, .8); }
+.anim .topbar__nav a { position: relative; padding: 6px 0; }
+.anim .topbar__nav a::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; border-radius: 2px; background: var(--amber); transform: scaleX(0); transform-origin: 0 50%; transition: transform .35s var(--ease); }
+.anim .topbar__nav a:hover::after, .anim .topbar__nav a.is-active::after { transform: scaleX(1); }
+.anim .topbar__nav a.is-active { color: var(--white); }
+
+/* ---------- Abertura ---------- */
+@keyframes rise { from { opacity: 0; transform: translateY(26px); } }
+@keyframes word-up { from { transform: translateY(112%) rotate(5deg); } }
+@keyframes bars-in { from { opacity: 0; transform: translateX(28%) skewX(-14deg); } }
+@keyframes disc-in { from { opacity: 0; transform: scale(.35) rotate(-40deg); } }
+@keyframes moto-in {
+  0% { opacity: 0; transform: translateX(190px) skewX(-14deg) scale(.94); filter: blur(7px); }
+  55% { opacity: 1; filter: blur(0); }
+  78% { transform: translateX(-10px) skewX(3deg); }
+  100% { transform: none; }
+}
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-9px); } }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
+@keyframes tag-in { from { opacity: 0; transform: translateX(-34px); } }
+@keyframes who-in { from { opacity: 0; transform: translateY(24px) scale(.9); } }
+@keyframes streaks { 0% { transform: translateX(70%); opacity: 0; } 25% { opacity: 1; } 100% { transform: translateX(-80%); opacity: 0; } }
+@keyframes ring { 0% { box-shadow: 0 0 0 0 rgba(15, 122, 67, .6); } 70%, 100% { box-shadow: 0 0 0 16px rgba(15, 122, 67, 0); } }
+@keyframes bar-in { from { transform: translateY(100%); } }
+@keyframes fade-in { from { opacity: 0; } }
+@keyframes fade-out { to { opacity: 0; } }
+
+.anim .hero__bars { animation: bars-in 1.1s var(--ease) backwards; translate: calc(var(--px, 0) * -22px) 0; }
+.anim .eyebrow { animation: rise .8s var(--ease) .1s backwards; }
+.anim .hero__lead { animation: rise .8s var(--ease) .62s backwards; }
+.anim .hero__cta { animation: rise .8s var(--ease) .74s backwards; }
+.anim .hero__facts { animation: rise .8s var(--ease) .86s backwards; }
+.anim .hero__title .w { display: inline-block; overflow: hidden; vertical-align: top; padding: .12em .05em .1em; margin: -.12em -.05em -.1em; }
+.anim .hero__title .w > span { display: inline-block; animation: word-up .95s var(--ease) backwards; animation-delay: calc(.26s + var(--wi, 0) * .1s); }
+
+.anim .hero__disc { animation: disc-in 1.1s var(--spring) .15s backwards; translate: calc(var(--px, 0) * -12px) calc(var(--py, 0) * -8px + var(--sy, 0) * .05px); }
+.anim .hero__moto .pic { overflow: visible; }
+.anim .hero__moto .pic img {
+  animation: moto-in 1.15s var(--ease) .35s backwards, float 7s ease-in-out 1.7s infinite;
+  translate: calc(var(--px, 0) * 16px) calc(var(--py, 0) * 10px + var(--sy, 0) * -.06px);
+  rotate: calc(var(--px, 0) * 1.2deg);
+  transition: scale .4s var(--ease);
+}
+.anim .hero__moto:hover .pic img { scale: 1.04; }
+/* Trocas (a cada 5 s): a moto sai pela esquerda e a próxima entra pela direita, sem o atraso da abertura. */
+@keyframes moto-out { to { opacity: 0; transform: translateX(-170px) skewX(12deg) scale(.95); filter: blur(6px); } }
+.anim .hero__moto .pic.is-in img { animation: moto-in .95s var(--ease) backwards, float 7s ease-in-out .95s infinite; }
+.anim .hero__moto .pic.is-out img { animation: moto-out .6s cubic-bezier(.5, 0, .9, .4) forwards; }
+.anim .hero__brand { animation: rise .8s var(--ease) backwards; }
+.anim .hero__dots { animation: rise .8s var(--ease) 1.3s backwards; }
+.anim .hero__dot:active::before, .anim .hero__pause:active { scale: .92; }
+.anim .hero__tag { animation: tag-in .8s var(--ease) 1s backwards; translate: calc(var(--px, 0) * 26px) calc(var(--py, 0) * 14px); }
+.anim .who { animation: who-in .8s var(--spring) 1.15s backwards, bob 6s ease-in-out 2s infinite; translate: calc(var(--px, 0) * 30px) calc(var(--py, 0) * 18px); }
+.anim .hero__stage::before {
+  content: ""; position: absolute; z-index: 3; left: -25%; right: -25%; top: 0; bottom: 0; pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, rgba(255, 255, 255, .9), transparent) 0 34% / 46% 2px no-repeat,
+    linear-gradient(90deg, transparent, rgba(255, 184, 28, .95), transparent) 0 50% / 62% 3px no-repeat,
+    linear-gradient(90deg, transparent, rgba(255, 255, 255, .7), transparent) 0 66% / 38% 2px no-repeat;
+  animation: streaks 1.15s cubic-bezier(.3, .6, .2, 1) .35s both;
+}
+.anim .stickybar .btn--wa { animation: ring 3.2s ease-out 2.6s infinite; }
+.anim .stickybar .btn--wa:hover { animation: none; }
+.anim .stickybar { animation: bar-in .7s var(--ease) 1.4s backwards; }
+
+/* ---------- Faixa de categorias (criada pelo JS) ---------- */
+.marquee { position: relative; overflow: hidden; background: var(--amber); color: var(--ink); border-top: 3px solid var(--ink); border-bottom: 3px solid var(--ink); user-select: none; }
+.marquee__track { display: flex; width: max-content; will-change: transform; transform-origin: 50% 50%; }
+.marquee__item { display: inline-flex; align-items: center; gap: 30px; padding: 10px 30px 10px 0; font-family: var(--display); font-weight: 800; font-size: clamp(24px, 3.4vw, 40px); line-height: 1; text-transform: uppercase; letter-spacing: .02em; white-space: nowrap; }
+.marquee__item.is-out { color: transparent; -webkit-text-stroke: 1.5px var(--ink); }
+.marquee__item i { width: 22px; height: 26px; flex: none; background: linear-gradient(112deg, transparent 0 30%, var(--ink) 30% 58%, transparent 58% 70%, var(--ink) 70% 82%, transparent 82%); }
+
+/* ---------- Entrada por rolagem ---------- */
+.anim .rv[data-rv] { opacity: 0; translate: 0 34px; transition: opacity .75s var(--ease) var(--rd, 0ms), translate .85s var(--ease) var(--rd, 0ms), scale .85s var(--ease) var(--rd, 0ms); }
+.anim .rv[data-rv="pop"] { translate: 0 28px; scale: .95; }
+.anim .rv[data-rv="left"] { translate: -26px 0; }
+.anim .rv[data-rv].is-in { opacity: 1; translate: 0 0; scale: 1; }
+@media print { .anim .rv[data-rv] { opacity: 1 !important; translate: none !important; scale: none !important; } }
+
+/* ---------- Filtros com indicador deslizante ---------- */
+.anim .tabs, .anim .segs { position: relative; }
+.anim .tabs::before, .anim .segs::before {
+  content: ""; position: absolute; z-index: 0; pointer-events: none;
+  left: var(--ix, 0px); top: var(--iy, 0px); width: var(--iw, 0px); height: var(--ih, 0px); opacity: var(--io, 0);
+  transition: left .45s var(--spring), width .45s var(--spring), opacity .2s;
+}
+.anim .tabs::before { border-radius: 12px; background: var(--ink); }
+.anim .segs::before { border-radius: 10px; background: var(--blue); }
+.anim .tabs.no-tr::before, .anim .segs.no-tr::before { transition: none; }
+.anim .tabs .tab, .anim .segs .seg__btn { position: relative; z-index: 1; }
+.anim .tabs[data-ind] .tab[aria-pressed="true"] { background: transparent; border-color: transparent; }
+.anim .segs[data-ind] .seg__btn[aria-pressed="true"] { background: transparent; }
+.anim .tab, .anim .seg__btn { transition: background-color .15s, color .25s, border-color .15s; }
+.anim .tab:active:not(:disabled), .anim .seg__btn:active:not(:disabled) { scale: .96; }
+
+/* ---------- Cartões ---------- */
+.anim .card { position: relative; }
+.anim .card::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s; background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 50%), rgba(33, 64, 232, .11), transparent 62%); }
+.anim .card.is-tilt::after { opacity: 1; }
+.anim .card.is-tilt {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(-6px);
+  transition: transform .14s ease-out, box-shadow .22s;
+  box-shadow: 0 1px 0 var(--line), 0 36px 50px -24px rgba(10, 15, 46, .55);
+}
+.anim .card .pic img { translate: calc(var(--tx, 0) * 1px) calc(var(--ty, 0) * 1px); transition: transform .4s, translate .2s ease-out; }
+.anim .card__cat { translate: calc(var(--tx, 0) * -.5px) calc(var(--ty, 0) * -.5px); transition: translate .2s ease-out; }
+.anim .card__stage:active .pic img { scale: .96; }
+
+.anim .path { transition: transform .35s var(--ease), border-color .3s; }
+.anim .path:hover { transform: translateY(-6px); border-color: rgba(255, 184, 28, .45); }
+.anim .path::before { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity .3s; background: radial-gradient(360px circle at var(--mx, 50%) var(--my, 50%), rgba(255, 184, 28, .15), transparent 60%); }
+.anim .path.is-lit::before { opacity: 1; }
+.anim .path__no { transition: transform .5s var(--spring); transform-origin: 0 100%; }
+.anim .path:hover .path__no { transform: scale(1.12) rotate(-3deg); }
+
+/* ---------- Botões ---------- */
+.anim .btn { position: relative; overflow: hidden; }
+.anim .btn--wa::before, .anim .btn--amber::before, .anim .btn--blue::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; transform: translateX(-130%) skewX(-18deg);
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, .38) 50%, transparent 70%); transition: transform .7s var(--ease);
+}
+.anim .btn--wa:hover::before, .anim .btn--amber:hover::before, .anim .btn--blue:hover::before { transform: translateX(130%) skewX(-18deg); }
+.anim .hero__cta .btn::before { content: none; }
+.anim .mag { transition: background-color .15s, color .15s, border-color .15s, transform .12s, translate .3s var(--ease); }
+.rip { position: absolute; border-radius: 50%; background: currentColor; opacity: .22; pointer-events: none; transform: scale(0); animation: rip .65s ease-out forwards; }
+@keyframes rip { to { transform: scale(1); opacity: 0; } }
+
+/* ---------- Gavetas ---------- */
+.anim .drawer[open]::backdrop { animation: fade-in .3s ease-out; }
+.anim .drawer.is-closing { pointer-events: none; }
+.anim .drawer.is-closing::backdrop { animation: fade-out .24s ease-in forwards; }
+.anim .drawer.is-swapped[open], .anim .drawer.is-swapped[open]::backdrop { animation: none; }
+.anim .drawer.is-swapped.is-closing::backdrop { animation: fade-out .24s ease-in forwards; }
+.anim .drawer.is-dragging { user-select: none; }
+@media (max-width: 767px) {
+  .anim .drawer__head { position: relative; touch-action: none; cursor: grab; }
+  .anim .drawer__head::before { content: ""; position: absolute; top: 7px; left: 50%; width: 42px; height: 4px; margin-left: -21px; border-radius: 2px; background: var(--line); }
+}
+.anim .icon-btn { transition: background-color .15s, color .15s, scale .15s; }
+.anim .icon-btn:active { scale: .9; }
+
+.anim .tabs2 { position: relative; }
+.anim .tabs2 button[aria-selected="true"]::after { display: none; }
+.anim .tabs2::after {
+  content: ""; position: absolute; bottom: -2px; height: 4px; border-radius: 2px; background: var(--blue);
+  left: var(--ix, 0px); width: var(--iw, 0px); transition: left .4s var(--spring), width .4s var(--spring);
+}
+.anim .tabs2.no-tr::after { transition: none; }
+.anim .tabs2 button { transition: color .2s; }
+.anim .gal__thumbs button { transition: border-color .2s, scale .2s var(--spring); }
+.anim .gal__thumbs button:hover { scale: 1.07; }
+.anim .gal__thumbs button[aria-current="true"] { scale: 1.04; }
+.anim .facts li { transition: translate .25s var(--ease), background-color .25s; }
+.anim .facts li:hover { translate: 0 -3px; background: var(--blue-50); }
+.anim .destaques li { transition: background-color .25s, padding-left .25s var(--ease); }
+.anim .destaques li:hover { padding-left: 8px; }
+.anim .destaques .num { transition: transform .3s var(--spring); display: inline-block; }
+.anim .destaques li:hover .num { transform: scale(1.15) rotate(-6deg); }
+.anim .grp summary, .anim .how summary { transition: color .2s; }
+.anim .grp summary:hover, .anim .how summary:hover { color: var(--blue); }
+.anim .path .how summary:hover { color: var(--amber); }
+.anim .grp summary::after, .anim .how summary::after { transition: transform .35s var(--spring); }
+.anim .specs tr { transition: background-color .2s; }
+.anim .specs tr:hover { background: var(--blue-50); }
+
+/* Simulador e formulários */
+.anim .radios input:checked + span { animation: chip-pop .38s var(--spring); }
+@keyframes chip-pop { 0% { scale: .9; } 60% { scale: 1.07; } 100% { scale: 1; } }
+.anim .plan__row { transition: background-color .2s, border-color .2s; }
+.anim .plan input:checked + .plan__row { animation: chip-pop .38s var(--spring); }
+.anim .plan input:active + .plan__row { scale: .98; }
+.anim .radios span { transition: background-color .2s, border-color .2s, color .2s, scale .15s; }
+.anim .radios label:active span { scale: .95; }
+.anim .out { position: relative; overflow: hidden; }
+.anim .out::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(105deg, transparent 35%, rgba(255, 184, 28, .18) 50%, transparent 65%); transform: translateX(-120%); animation: out-shine 3.6s ease-in-out 1s infinite; }
+@keyframes out-shine { 0% { transform: translateX(-120%); } 35%, 100% { transform: translateX(120%); } }
+
+.anim .stepper li { transition: border-color .4s, color .4s; }
+.anim .stepper i { transition: background-color .4s, color .4s, scale .3s var(--spring); }
+.anim .stepper li.is-on i { scale: 1.15; }
+.anim .fld input { transition: border-color .2s, box-shadow .25s; }
+.anim .check input { transition: scale .2s var(--spring); }
+.anim .check input:checked { scale: 1.15; }
+
+.confetti { position: absolute; inset: 0; z-index: 6; pointer-events: none; overflow: hidden; }
+.confetti i { position: absolute; width: 8px; height: 13px; border-radius: 2px; }
+
+/* Cookies */
+.anim .cookiebar:not([hidden]) { animation: rise .6s var(--ease) 1.8s backwards; }

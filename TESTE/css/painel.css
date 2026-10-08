@@ -1,0 +1,85 @@
+/* Painel do vendedor (painel.html) — visual de "central de controle": mesma paleta do site
+   (variáveis em style.css), mas em navy sólido, pra ficar claro que é uma área interna. */
+
+body.painel { background: var(--ink); min-height: 100dvh; }
+
+.painel__top {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  padding: 18px 24px; border-bottom: 1px solid rgba(255, 255, 255, .12);
+}
+.painel__top-esq { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.painel__brand {
+  font-family: var(--display); font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--amber); font-size: 15px;
+}
+.painel__voltar { color: rgba(255, 255, 255, .55); font-size: 13px; }
+.painel__voltar:hover { color: #fff; }
+.painel__loja { color: rgba(255, 255, 255, .6); font-size: 14px; font-weight: 600; }
+
+.painel__wrap { max-width: 760px; margin: 0 auto; padding: 40px 20px 80px; }
+
+/* ---------- login ---------- */
+.painel__login {
+  max-width: 380px; margin: 8vh auto 0; padding: 32px 28px; background: var(--ink-2);
+  border-radius: var(--r-lg); box-shadow: var(--shadow); text-align: center;
+}
+.painel__login h1 { font-family: var(--display); text-transform: uppercase; color: #fff; font-size: 26px; margin: 0 0 6px; }
+.painel__login p { color: rgba(255, 255, 255, .65); font-size: 14px; margin: 0 0 20px; }
+.painel__login form { display: flex; flex-direction: column; gap: 12px; }
+.painel__login input {
+  width: 100%; padding: 13px 16px; border-radius: var(--r-sm); border: 1px solid rgba(255, 255, 255, .18);
+  background: rgba(255, 255, 255, .06); color: #fff; font: inherit; font-size: 16px; text-align: center;
+}
+.painel__login input::placeholder { color: rgba(255, 255, 255, .4); }
+.painel__login input:focus { outline: 2px solid var(--amber); outline-offset: 1px; }
+.painel__lembrar {
+  display: flex; align-items: center; gap: 8px; justify-content: center;
+  color: rgba(255, 255, 255, .6); font-size: 13px; margin-top: -2px; cursor: pointer;
+}
+.painel__lembrar input { width: 15px; height: 15px; accent-color: var(--amber); }
+.painel__erro { color: #ff8a80; font-size: 13px; font-weight: 700; margin-top: 14px; }
+.painel__aviso { color: rgba(255, 255, 255, .55); font-size: 13px; margin-top: 16px; line-height: 1.5; }
+.painel__aviso code { background: rgba(255, 255, 255, .1); padding: 1px 5px; border-radius: 4px; }
+
+/* ---------- lista ---------- */
+.painel__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 20px; }
+.painel__head h1 { font-family: var(--display); text-transform: uppercase; color: #fff; font-size: 26px; margin: 0; }
+.painel__head input[type="search"] {
+  padding: 10px 14px; border-radius: var(--r-sm); border: 1px solid rgba(255, 255, 255, .18);
+  background: rgba(255, 255, 255, .06); color: #fff; font: inherit; font-size: 14px; min-width: 200px;
+}
+.painel__head input[type="search"]::placeholder { color: rgba(255, 255, 255, .4); }
+.painel__dica { color: rgba(255, 255, 255, .5); font-size: 13px; margin: -10px 0 16px; }
+.painel__aviso-real {
+  color: var(--blue-100); font-size: 13px; line-height: 1.5; margin: -6px 0 16px; padding: 10px 14px;
+  background: rgba(33, 64, 232, .15); border: 1px solid rgba(33, 64, 232, .35); border-radius: var(--r-sm);
+}
+.painel__aviso-local {
+  color: var(--amber); font-size: 13px; line-height: 1.5; margin: -6px 0 16px; padding: 10px 14px;
+  background: rgba(255, 184, 28, .1); border: 1px solid rgba(255, 184, 28, .3); border-radius: var(--r-sm);
+}
+.painel__aviso-local code { background: rgba(255, 255, 255, .1); padding: 1px 5px; border-radius: 4px; color: #fff; }
+
+.pn-row {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 14px;
+  padding: 14px; background: var(--ink-2); border-radius: var(--r); margin-bottom: 10px;
+}
+.pn-row__pic { width: 56px; height: 56px; border-radius: 12px; background: #fff; overflow: hidden; display: grid; place-items: center; flex: none; }
+.pn-row__pic img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+.pn-row__info { min-width: 0; flex: 1; }
+.pn-row__info b { display: block; color: #fff; font-size: 15px; font-weight: 800; }
+.pn-row__oficial, .pn-row__loja { display: block; font-size: 12.5px; margin-top: 2px; }
+.pn-row__oficial { color: rgba(255, 255, 255, .5); }
+.pn-row__loja { color: var(--amber); font-weight: 700; }
+
+.pn-row__editar { display: flex; align-items: center; gap: 8px; }
+.pn-row__preco {
+  width: 128px; padding: 9px 12px; border-radius: var(--r-sm); border: 1px solid rgba(255, 255, 255, .18);
+  background: rgba(255, 255, 255, .06); color: #fff; font: inherit; font-weight: 700; font-size: 14px;
+}
+.pn-row__preco::placeholder { color: rgba(255, 255, 255, .35); font-weight: 500; }
+.pn-row__status { flex: none; width: 100%; font-size: 12.5px; font-weight: 700; min-height: 16px; }
+.pn-row__status.is-ok { color: #7fe0a8; }
+.pn-row__status.is-erro { color: #ff8a80; }
+
+.painel__vazio { color: rgba(255, 255, 255, .5); text-align: center; padding: 30px 0; font-size: 14px; }
